@@ -1,0 +1,136 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:background="#0064eb"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        >
+
+    </android.support.v7.widget.Toolbar>
+
+
+
+<LinearLayout
+    android:layout_marginTop="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="130dp"
+            android:background="@drawable/shape_edit"
+            android:elevation="2dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:layout_height="150dp" />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:elevation="3dp"
+            android:id="@+id/add_pic"
+            android:layout_marginTop="60dp"
+            android:layout_marginLeft="50dp"
+            android:src="@drawable/add_pic"
+            />
+
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:hint="电影名称："
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="13dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="2dp"
+            android:elevation="2dp"
+            android:id="@+id/movie_name"
+            android:maxLines="1"
+            android:maxLength="11"
+            android:inputType="text"
+            android:background="@drawable/shape_edit"
+            android:layout_marginBottom="20dp"
+            />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:hint="国家："
+            android:layout_marginRight="8dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="2dp"
+            android:elevation="2dp"
+            android:maxLines="1"
+            android:maxLength="11"
+            android:inputType="text"
+            android:background="@drawable/shape_edit"
+            android:layout_marginBottom="20dp" />
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:entries="@array/movietype"
+            android:textAlignment="center"
+            android:layout_marginRight="8dp"
+            android:elevation="2dp"
+            android:id="@+id/spinner_type"
+            android:layout_marginBottom="3dp"
+            android:background="@drawable/shape_edit"
+            >
+
+
+        </Spinner>
+
+
+    </LinearLayout>
+
+</LinearLayout>
+
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_margin="10dp"
+        android:layout_height="100dp"
+        android:elevation="2dp"
+        android:padding="10dp"
+        android:id="@+id/movie_summary"
+        android:hint="说点推荐理由吧~"
+        android:inputType="textMultiLine"
+        android:gravity="start"
+        android:maxLength="80"
+        android:background="@drawable/shape_edit"
+        />
+
+
+    <Button
+        android:id="@+id/uploadImage"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:background="#007ffc"
+        android:textColor="#fff"
+        android:layout_gravity="center"
+        android:text="上传图片" />
+
+
+
+</LinearLayout>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageView
+            android:id="@+id/image_comment"
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:layout_margin="5dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="2dp"
+                        >
+
+                        <TextView
+                            android:text="电影:"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            />
+                        <TextView
+                            android:id="@+id/movie_name"
+                            android:text="dfasfa"
+                            android:layout_marginLeft="2dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        >
+
+                        <TextView
+                            android:text="分享者:"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            />
+                        <TextView
+                            android:id="@+id/movie_uploader"
+                            android:text="dfasfa"
+                            android:layout_marginLeft="2dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:text="简介:"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                        <TextView
+                            android:layout_marginLeft="2dp"
+                            android:text="dfsafas"
+                            android:id="@+id/movie_summary"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            />
+                    </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#d1d1d1"
+                android:layout_margin="6dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="最新评论"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textSize="14dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginBottom="20dp"
+                />
+
+
+        </LinearLayout>
+
+</LinearLayout>

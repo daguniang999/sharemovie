@@ -9,12 +9,14 @@
     >
 
 
-    <LinearLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         >
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/main_toolbar"
@@ -37,38 +39,46 @@
 
 
         </android.support.v7.widget.Toolbar>
-
         <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/MainTitle"
-            app:tabIndicatorColor="#fff"
-            app:tabIndicatorHeight="4dp"
-            app:tabSelectedTextColor="#fff">
-
-
-        </android.support.design.widget.TabLayout>
-        <android.support.v4.view.ViewPager
-        android:id="@+id/views"
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/MainTitle"
+        app:tabIndicatorColor="#fff"
+        app:tabIndicatorHeight="4dp"
+        app:tabSelectedTextColor="#fff">
 
-    </android.support.v4.view.ViewPager>
 
-            <TextView
-            android:text="dsafads"
-            android:textColor="#000"
+    </android.support.design.widget.TabLayout>
+    </android.support.design.widget.AppBarLayout>
+
+
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/views"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+        </android.support.v4.view.ViewPager>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:src="@drawable/comment_add"
+            android:layout_margin="16dp"
+            android:background="#50c8ef"
+            android:id="@+id/movie_add"
             android:layout_height="wrap_content" />
 
 
-
-
-
-
-</LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
         android:layout_width="match_parent"
@@ -76,6 +86,7 @@
         android:layout_gravity="start"
         android:id="@+id/nav_view"
         app:headerLayout="@layout/nav_header"
+        app:menu="@menu/nav_menu"
         />
 
 

@@ -1,30 +1,24 @@
 package com.example.chenx.sharebook;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.TextView;
 //import android.widget.Toolbar;
-import android.support.v7.widget.Toolbar;
-import android.widget.TableLayout;
 
-import com.bumptech.glide.Glide;
+import com.example.chenx.sharebook.util.LitePalUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +29,25 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private List<Fragment> list;
     private MyPagerAdapter myPagerAdapter;
-
+    private FloatingActionButton floatingActionButton;
+    private TextView nav_name;
+    private NavigationView navigationView;
     private String [] titles={"1","2","3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        floatingActionButton=(FloatingActionButton)findViewById(R.id.movie_add);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,MovieAddActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
         drawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O) {
@@ -50,13 +56,14 @@ public class MainActivity extends AppCompatActivity {
 
           //  actionBar.setTitle("fsfaa");
         }
-        ActionBar actionBar=getSupportActionBar();
+        ActionBar actionBar=getSupportActionBar();                                                                                                                                                                                                                                                                                      
 
         if(actionBar!=null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.detail);
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
 
         TabLayout tabLayout=(TabLayout)findViewById(R.id.tabs);
 
@@ -66,17 +73,57 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager=(ViewPager)findViewById(R.id.views);
         list=new ArrayList<Fragment>();
-        list.add(new firstFragment());
-        list.add(new secondFragment());
-        list.add(new thirdFragment());
+        list.add(new typeFragment("1"));
+        list.add(new typeFragment("2"));
+        list.add(new typeFragment("3"));
+        list.add(new typeFragment("4"));
+        list.add(new typeFragment("5"));
+        list.add(new typeFragment("6"));
+        list.add(new typeFragment("7"));
+        list.add(new typeFragment("8"));
         myPagerAdapter=new MyPagerAdapter(getSupportFragmentManager(),list);
 
 
         viewPager.setAdapter(myPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setText("First");
-        tabLayout.getTabAt(1).setText("Second");
-        tabLayout.getTabAt(2).setText("Third");
+        tabLayout.getTabAt(0).setText("剧情");
+        tabLayout.getTabAt(1).setText("爱情");
+        tabLayout.getTabAt(2).setText("教育");
+        tabLayout.getTabAt(3).setText("动漫");
+        tabLayout.getTabAt(4).setText("文艺");
+        tabLayout.getTabAt(5).setText("搞笑");
+        tabLayout.getTabAt(6).setText("动作");
+        tabLayout.getTabAt(7).setText("外语");
+        tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+        navigationView=(NavigationView)findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                switch (menuItem.getItemId()){
+
+                    case R.id.nav_main:
+                        viewPager.setCurrentItem(0);
+                        break;
+
+                    case R.id.nav_collect:
+                        break;
+                    case R.id.nav_set:
+                        break;
+
+                    default:
+                        break;
+                }
+
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
+        navigationView=(NavigationView)findViewById(R.id.nav_view);
+        nav_name=(TextView)navigationView.getHeaderView(0).findViewById(R.id.nav_username);
+        nav_name.setText(LitePalUtil.getPerson().getName());
+       // nav_name.setText("4324");
+       // nav_name.setText(LitePalUtil.getPerson().getName());
 
     }
 

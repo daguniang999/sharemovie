@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<litepal>
+    <dbname value="db_Person"></dbname>
+    <version value="1"></version>
+    <list>
+        <mapping class="com.example.chenx.sharebook.db.Person"></mapping>
+    </list>
+
+</litepal>
