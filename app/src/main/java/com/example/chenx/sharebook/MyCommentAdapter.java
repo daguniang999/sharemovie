@@ -3,14 +3,17 @@ package com.example.chenx.sharebook;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.chenx.sharebook.gson.Movie_item;
 import com.example.chenx.sharebook.gson.Movie_comment;
+import com.example.chenx.sharebook.util.OverAllObject;
 
 import java.util.List;
 
@@ -35,6 +38,8 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((TitleViewHolder )viewHolder).movieUploder.setText(commenttTitle.uploader);
             ((TitleViewHolder )viewHolder).movieSummary.setText(commenttTitle.summary);
            // ((TitleViewHolder )viewHolder).movieName.setText(commenttTitle.url);
+           // Log.d("eeeepp", commenttTitle.url);
+            Glide.with(mContent).load(OverAllObject.getImageUrl(commenttTitle.url)).into(((TitleViewHolder) viewHolder).movieImage);
 
 
         }else if(viewHolder instanceof CommentViewHolder){
@@ -90,7 +95,7 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
         public TitleViewHolder(View view){
             super(view);
-            movieImage=(ImageView)view.findViewById(R.id.movie_image);
+            movieImage=(ImageView)view.findViewById(R.id.image_comment);
             movieName=(TextView)view.findViewById(R.id.movie_name);
             movieSummary=(TextView)view.findViewById(R.id.movie_summary);
             movieUploder=(TextView)view.findViewById(R.id.movie_uploader);
@@ -111,6 +116,7 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             commentName=(TextView)view.findViewById(R.id.comment_name);
             commentTime=(TextView)view.findViewById(R.id.comment_time);
             commentContent=(TextView)view.findViewById(R.id.comment_content);
+
 
         }
 

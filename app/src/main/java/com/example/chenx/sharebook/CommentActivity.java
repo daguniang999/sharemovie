@@ -26,6 +26,7 @@ import com.example.chenx.sharebook.gson.Movie_comment;
 import com.example.chenx.sharebook.gson.SimpleBack;
 import com.example.chenx.sharebook.util.HttpUtil;
 import com.example.chenx.sharebook.util.LitePalUtil;
+import com.example.chenx.sharebook.util.OverAllObject;
 import com.example.chenx.sharebook.util.Utility;
 
 import java.io.IOException;
@@ -68,7 +69,7 @@ public class CommentActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 loadComment();
-                swipeRefreshLayout.setRefreshing(false);
+
             }
         });
 
@@ -86,6 +87,7 @@ public class CommentActivity extends AppCompatActivity {
         movie_item.name=intent.getStringExtra("movie_name");
         movie_item.uploader=intent.getStringExtra("movie_uploader");
         movie_item.summary=intent.getStringExtra("movie_summary");
+        movie_item.url=intent.getStringExtra("movie_url");
         movieID=intent.getStringExtra("movie_id");
         loadComment();
         Log.d("eeee", movie_item.name+movieID+movie_item.uploader+movie_item.summary);
@@ -107,7 +109,7 @@ public class CommentActivity extends AppCompatActivity {
                                 EditText editText=layout.findViewById(R.id.comment_add_content);
                                 String uploader=LitePalUtil.getPerson().getName();
                                 String content=editText.getText().toString();
-                                String url="http://192.168.0.123:6767/service.aspx?type=addcomment&&movieid="+movieID+"&&content="+content+"&&name="+uploader;
+                                String url=OverAllObject.getAddress()+"?type=addcomment&&movieid="+movieID+"&&content="+content+"&&name="+uploader;
                                 HttpUtil.sendOkHttpRequest(url, new Callback() {
                                     @Override
                                     public void onFailure(Call call, IOException e) {
@@ -164,12 +166,19 @@ public class CommentActivity extends AppCompatActivity {
 
     public void loadComment(){
 
-        final String url="http://192.168.0.123:6767/service.aspx?type=commentlist&&movieid="+movieID;
+        final String url=OverAllObject.getAddress()+"?type=commentlist&&movieid="+movieID;
         Log.d("eeee", url);
         HttpUtil.sendOkHttpRequest(url, new Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
-                Toast.makeText(CommentActivity.this,"加载失败",Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(CommentActivity.this,"加载失败",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                swipeRefreshLayout.setRefreshing(false);
             }
 
             @Override
@@ -179,7 +188,7 @@ public class CommentActivity extends AppCompatActivity {
                 Log.d("eeee", responseText);
                 Comment_List list=Utility.handleMovieCommentResponse(responseText);
                 if(Integer.valueOf(list.count)>=1) {
-
+                    movie_commentList.clear();
                     for (Movie_comment comment : list.comment_list) {
                         movie_commentList.add(comment);
                     }
@@ -192,6 +201,7 @@ public class CommentActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
 

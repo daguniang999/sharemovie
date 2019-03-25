@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.chenx.sharebook.db.Person;
 import com.example.chenx.sharebook.gson.SimpleBack;
 import com.example.chenx.sharebook.util.HttpUtil;
+import com.example.chenx.sharebook.util.OverAllObject;
 import com.example.chenx.sharebook.util.Utility;
 import org.litepal.LitePal;
 
@@ -36,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.login_login:
                 String user=UserName.getText().toString().trim();
                 String password=PassWord.getText().toString().trim();
-                String url="http://192.168.0.123:6767/service.aspx?type=login&&id="+user+"&&password="+password;
+                String url=OverAllObject.getAddress() +"?type=login&&id="+user+"&&password="+password;
                 HttpUtil.sendOkHttpRequest(url, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {

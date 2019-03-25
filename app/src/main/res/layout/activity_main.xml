@@ -30,7 +30,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_gravity="center"
-                android:text="BookSTree"
+                android:text="MovieSTree"
                 android:textSize="20dp"
                 android:textColor="#fff"
                 android:textStyle="bold"

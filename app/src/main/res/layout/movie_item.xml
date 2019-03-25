@@ -16,6 +16,7 @@
     <ImageView
         android:id="@+id/movie_image"
         android:layout_width="80dp"
+        android:scaleType="centerCrop"
         android:layout_height="100dp"
         android:layout_margin="5dp"
 

@@ -2,12 +2,12 @@
 <resources>
     <string-array name="movietype">
         <item>剧情</item>
-        <item>爱情</item>
-        <item>情感</item>
-        <item>少儿</item>
-        <item>动漫</item>
-        <item>动作</item>
-        <item>戏剧</item>
         <item>喜剧</item>
+        <item>爱情</item>
+        <item>传记</item>
+        <item>动作</item>
+        <item>历史</item>
+        <item>科幻</item>
+        <item>奇幻</item>
     </string-array>
 </resources>

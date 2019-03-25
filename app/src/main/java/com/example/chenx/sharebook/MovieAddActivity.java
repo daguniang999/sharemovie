@@ -40,6 +40,7 @@ import android.widget.Toast;
 import com.bumptech.glide.load.model.ModelCache;
 import com.example.chenx.sharebook.util.HttpUtil;
 import com.example.chenx.sharebook.util.LitePalUtil;
+import com.example.chenx.sharebook.util.OverAllObject;
 import com.example.chenx.sharebook.util.UploadUtil;
 
 import java.io.File;
@@ -55,7 +56,6 @@ public class MovieAddActivity extends AppCompatActivity implements View.OnClickL
     private EditText moviename;
     private EditText moviesummary;
     private Spinner spinner;
-    public static final int UPLOAD_PHOTO=2;
     public static final int CHOOSE_PHOTO=1;
 
 
@@ -105,7 +105,7 @@ public class MovieAddActivity extends AppCompatActivity implements View.OnClickL
                 }else {
                     Bitmap bitmap=BitmapFactory.decodeFile(picPath);
                     File file=new File(picPath);
-                    String URL="http://192.168.0.123:6767/service.aspx";
+                    String URL=OverAllObject.getAddress();
                     String PicName="img_"+System.currentTimeMillis();
                     String name=moviename.getText().toString();
                     String summary=moviesummary.getText().toString();

@@ -2,9 +2,14 @@ package com.example.chenx.sharebook;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,8 +18,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.chenx.sharebook.gson.Movie_item;
+import com.example.chenx.sharebook.util.OverAllObject;
 
+import java.net.URL;
 import java.util.List;
+import java.util.logging.Handler;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
@@ -52,7 +60,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         viewHolder.movieName.setText(movie.name);
         viewHolder.moviesummary.setText(movie.summary);
         viewHolder.movieuploadr.setText(movie.uploader);
-        Glide.with(mContext).load(movie.url).into(viewHolder.movieImage);
+//        final ViewHolder viewHolder1=viewHolder;
+//        viewHolder.movieImage.setImageBitmap();
+//      //  Bitmap bitmap=BitmapFactory.decodeStream(url.openStream());
+//        //viewHolder.movieImage.setImageURI();
+//        android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
+//        handler.post(new Runnable() {
+//            @Override
+//            public void run() {
+
+                Glide.with(mContext).load(OverAllObject.getImageUrl(movie.url)).into(viewHolder.movieImage);
+
+//            }
+//        });
+//
     }
 
     @NonNull
@@ -75,6 +96,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                intent.putExtra("movie_name",movie_item.name);
                intent.putExtra("movie_uploader",movie_item.uploader);
                intent.putExtra("movie_summary",movie_item.summary);
+               intent.putExtra("movie_url",movie_item.url);
                mContext.startActivity(intent);
 
 

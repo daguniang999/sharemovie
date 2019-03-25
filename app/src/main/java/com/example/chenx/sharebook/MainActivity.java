@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private TextView nav_name;
     private NavigationView navigationView;
-    private String [] titles={"1","2","3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,33 +66,29 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout=(TabLayout)findViewById(R.id.tabs);
 
-        tabLayout.addTab(tabLayout.newTab().setText("fds"));
-        tabLayout.addTab(tabLayout.newTab().setText("fds"));
-        tabLayout.addTab(tabLayout.newTab().setText("fdsf"));
-
         viewPager=(ViewPager)findViewById(R.id.views);
         list=new ArrayList<Fragment>();
-        list.add(new typeFragment("1"));
-        list.add(new typeFragment("2"));
-        list.add(new typeFragment("3"));
-        list.add(new typeFragment("4"));
-        list.add(new typeFragment("5"));
-        list.add(new typeFragment("6"));
-        list.add(new typeFragment("7"));
-        list.add(new typeFragment("8"));
+        list.add(new typeFragment("剧情"));
+        list.add(new typeFragment("喜剧"));
+        list.add(new typeFragment("爱情"));
+        list.add(new typeFragment("传记"));
+        list.add(new typeFragment("动作"));
+        list.add(new typeFragment("历史"));
+        list.add(new typeFragment("科幻"));
+        list.add(new typeFragment("奇幻"));
         myPagerAdapter=new MyPagerAdapter(getSupportFragmentManager(),list);
 
 
         viewPager.setAdapter(myPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setText("剧情");
-        tabLayout.getTabAt(1).setText("爱情");
-        tabLayout.getTabAt(2).setText("教育");
-        tabLayout.getTabAt(3).setText("动漫");
-        tabLayout.getTabAt(4).setText("文艺");
-        tabLayout.getTabAt(5).setText("搞笑");
-        tabLayout.getTabAt(6).setText("动作");
-        tabLayout.getTabAt(7).setText("外语");
+        tabLayout.getTabAt(1).setText("喜剧");
+        tabLayout.getTabAt(2).setText("爱情");
+        tabLayout.getTabAt(3).setText("传记");
+        tabLayout.getTabAt(4).setText("动作");
+        tabLayout.getTabAt(5).setText("历史");
+        tabLayout.getTabAt(6).setText("科幻");
+        tabLayout.getTabAt(7).setText("奇幻");
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         navigationView=(NavigationView)findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -122,8 +117,6 @@ public class MainActivity extends AppCompatActivity {
         navigationView=(NavigationView)findViewById(R.id.nav_view);
         nav_name=(TextView)navigationView.getHeaderView(0).findViewById(R.id.nav_username);
         nav_name.setText(LitePalUtil.getPerson().getName());
-       // nav_name.setText("4324");
-       // nav_name.setText(LitePalUtil.getPerson().getName());
 
     }
 

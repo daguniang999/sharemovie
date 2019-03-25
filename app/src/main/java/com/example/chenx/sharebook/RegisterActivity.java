@@ -16,6 +16,7 @@ import android.widget.Toolbar;
 
 import com.example.chenx.sharebook.gson.SimpleBack;
 import com.example.chenx.sharebook.util.HttpUtil;
+import com.example.chenx.sharebook.util.OverAllObject;
 import com.example.chenx.sharebook.util.Utility;
 
 import java.io.IOException;
@@ -54,7 +55,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String username=UserName.getText().toString().trim();
                 String password=PassWord.getText().toString();
-                String url="http://10.63.105.142:6767/service.aspx?type=register&&id="+username+"&&password="+password;
+                String url=OverAllObject.getAddress() +"?type=register&&id="+username+"&&password="+password;
                 HttpUtil.sendOkHttpRequest(url, new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {

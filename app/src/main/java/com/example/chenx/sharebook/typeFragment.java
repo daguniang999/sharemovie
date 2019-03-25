@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.example.chenx.sharebook.gson.Movie_List;
 import com.example.chenx.sharebook.gson.Movie_item;
 import com.example.chenx.sharebook.util.HttpUtil;
+import com.example.chenx.sharebook.util.OverAllObject;
 import com.example.chenx.sharebook.util.Utility;
 
 import java.io.IOException;
@@ -55,7 +57,7 @@ public class typeFragment extends Fragment {
             public void onRefresh() {
                 initList();
                 //adapter.notifyDataSetChanged();
-                swipeRefreshLayout.setRefreshing(false);
+
             }
         });
         return view;
@@ -82,10 +84,20 @@ public class typeFragment extends Fragment {
 
     private void initList(){
 
-        String url="http://192.168.0.123:6767/service.aspx?type=movielist&&movietype=1";
+        String url=OverAllObject.getAddress() +"?type=movielist&&movietype="+type;
         HttpUtil.sendOkHttpRequest(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Toast.makeText(getContext(),"加载失败",Toast.LENGTH_SHORT).show();
+                        swipeRefreshLayout.setRefreshing(false);
+
+                    }
+                });
 
             }
 
@@ -95,8 +107,12 @@ public class typeFragment extends Fragment {
                 final String responseText=response.body().string();
                 final Movie_List movie=Utility.handleMovieitemResponse(responseText);
 
-                for(Movie_item p:movie.movie_list)
-                   movieList.add(p);
+                movieList.clear();
+
+                for(Movie_item movie_item:movie.movie_list){
+                    movieList.add(movie_item);
+
+                }
 
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
@@ -104,6 +120,7 @@ public class typeFragment extends Fragment {
                     public void run() {
 
                         adapter.notifyDataSetChanged();
+                        swipeRefreshLayout.setRefreshing(false);
 
                     }
                 });
