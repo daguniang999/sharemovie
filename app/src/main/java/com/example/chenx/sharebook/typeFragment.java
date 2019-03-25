@@ -5,9 +5,11 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +36,9 @@ public class typeFragment extends Fragment {
 
     private List<Movie_item> movieList=new ArrayList<>();
     private String type;
+    private LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout swipeRefreshLayout;
+    private int lastVisibleitem;
     MovieAdapter adapter;
     @Nullable
     @Override
@@ -48,15 +52,17 @@ public class typeFragment extends Fragment {
         GridLayoutManager manager=new GridLayoutManager(getContext(),1);
         recyclerView.setLayoutManager(manager);
         adapter=new MovieAdapter(movieList);
-
         recyclerView.setAdapter(adapter);
-        initList();
-      //  adapter.notifyDataSetChanged();
+        recyclerView.addOnScrollListener(loading);
+
+
+        loadingList(true);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                initList();
-                //adapter.notifyDataSetChanged();
+
+                loadingList(true);
+                swipeRefreshLayout.setRefreshing(false);
 
             }
         });
@@ -81,10 +87,19 @@ public class typeFragment extends Fragment {
         super.onDestroyView();
     }
 
+    public void loadingList(final boolean flag){
+        String movieid="";
 
-    private void initList(){
 
-        String url=OverAllObject.getAddress() +"?type=movielist&&movietype="+type;
+
+        if(flag){
+            movieid="100000";
+        }else if(movieList.size()!=0){
+            movieid=movieList.get(movieList.size()-1).id;
+        }
+
+        String url=OverAllObject.getAddress() +"?type=movielimit&&movietype="+type+"&&movieid="+movieid;
+        //Log.d("rrrr", url);
         HttpUtil.sendOkHttpRequest(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -104,14 +119,24 @@ public class typeFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
+                if(flag){
+
+                  //  Log.d("rrrr", String.valueOf(movieList.size()));
+                    int p=movieList.size();
+                    for(int i=0;i<p;i++){
+                        movieList.remove(0);
+                   //     Log.d("rrrr", "!!!!");
+                    }
+                }
                 final String responseText=response.body().string();
                 final Movie_List movie=Utility.handleMovieitemResponse(responseText);
 
-                movieList.clear();
+                if(movie.movie_list.size()!=0){
 
-                for(Movie_item movie_item:movie.movie_list){
-                    movieList.add(movie_item);
+                    for(Movie_item movie_item:movie.movie_list){
+                        movieList.add(movie_item);
 
+                    }
                 }
 
                 Handler handler = new Handler(Looper.getMainLooper());
@@ -120,7 +145,8 @@ public class typeFragment extends Fragment {
                     public void run() {
 
                         adapter.notifyDataSetChanged();
-                        swipeRefreshLayout.setRefreshing(false);
+
+
 
                     }
                 });
@@ -129,8 +155,31 @@ public class typeFragment extends Fragment {
         });
 
 
-
-
     }
+
+    private RecyclerView.OnScrollListener loading=new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+            if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleitem+1==adapter.getItemCount()){
+
+                loadingList(false);
+
+
+            }
+
+
+        }
+
+        @Override
+        public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            linearLayoutManager=(LinearLayoutManager)recyclerView.getLayoutManager();
+            lastVisibleitem=linearLayoutManager.findLastVisibleItemPosition();
+
+        }
+    };
+
 
 }
