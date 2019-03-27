@@ -67,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout=(TabLayout)findViewById(R.id.tabs);
 
         viewPager=(ViewPager)findViewById(R.id.views);
+
+
+
         list=new ArrayList<Fragment>();
         list.add(new typeFragment("剧情"));
         list.add(new typeFragment("喜剧"));

@@ -13,6 +13,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -40,29 +41,53 @@ public class typeFragment extends Fragment {
     SwipeRefreshLayout swipeRefreshLayout;
     private int lastVisibleitem;
     MovieAdapter adapter;
+    private boolean isloading=true;
+
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(getUserVisibleHint()) {
+            isloading = true;
+            loadingList(true);
+        }
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
+
+      //  Log.d("tttt", "onCreateView: ");
         View view=inflater.inflate(R.layout.layout_1,null);
 
         RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.first_recycler);
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_view);
-
-
         GridLayoutManager manager=new GridLayoutManager(getContext(),1);
         recyclerView.setLayoutManager(manager);
         adapter=new MovieAdapter(movieList);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(loading);
+        recyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(isloading){
+                    return true;
+                }else {
+                    return false;
+                }
+               // return false;
+            }
+        });
 
 
-        loadingList(true);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                isloading=true;
                 loadingList(true);
-                swipeRefreshLayout.setRefreshing(false);
+
+
 
             }
         });
@@ -79,12 +104,18 @@ public class typeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        isloading=true;
+//        loadingList(true);
 
+       // adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        Log.d("eeee", String.valueOf(movieList.size())+type);
+
+
     }
 
     public void loadingList(final boolean flag){
@@ -99,7 +130,7 @@ public class typeFragment extends Fragment {
         }
 
         String url=OverAllObject.getAddress() +"?type=movielimit&&movietype="+type+"&&movieid="+movieid;
-        //Log.d("rrrr", url);
+        Log.d("pppp", url);
         HttpUtil.sendOkHttpRequest(url, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -121,14 +152,15 @@ public class typeFragment extends Fragment {
 
                 if(flag){
 
-                  //  Log.d("rrrr", String.valueOf(movieList.size()));
-                    int p=movieList.size();
-                    for(int i=0;i<p;i++){
+                    for(int i=movieList.size();i>0;i--){
                         movieList.remove(0);
-                   //     Log.d("rrrr", "!!!!");
                     }
+                    Log.d("pppp", "1: "+movieList.size());
+
+
                 }
                 final String responseText=response.body().string();
+                Log.d("pppp", responseText);
                 final Movie_List movie=Utility.handleMovieitemResponse(responseText);
 
                 if(movie.movie_list.size()!=0){
@@ -137,15 +169,20 @@ public class typeFragment extends Fragment {
                         movieList.add(movie_item);
 
                     }
+                    Log.d("pppp", "2: "+movieList.size());
                 }
+
+
 
                 Handler handler = new Handler(Looper.getMainLooper());
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
 
-                        adapter.notifyDataSetChanged();
-
+                       adapter.notifyDataSetChanged();
+                       Log.d("pppp", "3: "+movieList.size());
+                       isloading=false;
+                       swipeRefreshLayout.setRefreshing(false);
 
 
                     }
@@ -161,8 +198,8 @@ public class typeFragment extends Fragment {
         @Override
         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if(newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleitem+1==adapter.getItemCount()){
-
+            if(movieList.size()>=10&&newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleitem+1==adapter.getItemCount()){
+                isloading=true;
                 loadingList(false);
 
 
@@ -170,6 +207,7 @@ public class typeFragment extends Fragment {
 
 
         }
+
 
         @Override
         public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -180,6 +218,9 @@ public class typeFragment extends Fragment {
 
         }
     };
+
+
+
 
 
 }
