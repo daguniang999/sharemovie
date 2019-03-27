@@ -44,6 +44,7 @@ import com.example.chenx.sharebook.util.OverAllObject;
 import com.example.chenx.sharebook.util.UploadUtil;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.sql.BatchUpdateException;
 
 public class MovieAddActivity extends AppCompatActivity implements View.OnClickListener {
@@ -103,8 +104,16 @@ public class MovieAddActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(MovieAddActivity.this,"请填写完整",Toast.LENGTH_SHORT).show();
 
                 }else {
-                    Bitmap bitmap=BitmapFactory.decodeFile(picPath);
                     File file=new File(picPath);
+                    Bitmap bm=BitmapFactory.decodeFile(picPath);
+                    try{
+                        FileOutputStream out=new FileOutputStream(file);
+                        bm.compress(Bitmap.CompressFormat.JPEG,50,out);
+                    }catch (Exception e){
+                            e.printStackTrace();
+
+                    }
+
                     String URL=OverAllObject.getAddress();
                     String PicName="img_"+System.currentTimeMillis();
                     String name=moviename.getText().toString();

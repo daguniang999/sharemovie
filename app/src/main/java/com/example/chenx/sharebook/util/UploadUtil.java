@@ -40,6 +40,8 @@ public class UploadUtil {
 
     public static void uploadPic(File file, String RequestURL, String PicName, String movieName, String Uploader, final String Type, String Summary, final Activity activity) {
 
+
+
         MultipartBody.Builder builder=new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name",movieName)
