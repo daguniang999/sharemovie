@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.chenx.sharebook.gson.Comment_List;
@@ -44,6 +45,8 @@ public class CommentActivity extends AppCompatActivity {
     private List<Movie_comment> movie_commentList=new ArrayList<>();
     private FloatingActionButton addbutton;
     private String movieID;
+    private Movie_item Mymovie;
+    private ImageView pic;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
@@ -75,23 +78,25 @@ public class CommentActivity extends AppCompatActivity {
 
 
 
+
+
         recyclerView=(RecyclerView)findViewById(R.id.recycler_view_comment);
         GridLayoutManager manager=new GridLayoutManager(this,1);
         recyclerView.setLayoutManager(manager);
 
 
         Intent intent=getIntent();
-        Movie_item movie_item=new Movie_item();
+        Mymovie=new Movie_item();
         adapter=new MyCommentAdapter(movie_commentList);
 
-        movie_item.name=intent.getStringExtra("movie_name");
-        movie_item.uploader=intent.getStringExtra("movie_uploader");
-        movie_item.summary=intent.getStringExtra("movie_summary");
-        movie_item.url=intent.getStringExtra("movie_url");
+        Mymovie.name=intent.getStringExtra("movie_name");
+        Mymovie.uploader=intent.getStringExtra("movie_uploader");
+        Mymovie.summary=intent.getStringExtra("movie_summary");
+        Mymovie.url=intent.getStringExtra("movie_url");
         movieID=intent.getStringExtra("movie_id");
         loadComment();
-        Log.d("eeee", movie_item.name+movieID+movie_item.uploader+movie_item.summary);
-        adapter.setTitle(movie_item);
+        Log.d("eeee", Mymovie.name+movieID+Mymovie.uploader+Mymovie.summary);
+        adapter.setTitle(Mymovie);
 
         recyclerView.setAdapter(adapter);
 

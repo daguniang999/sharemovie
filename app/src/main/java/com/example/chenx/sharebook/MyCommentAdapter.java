@@ -1,6 +1,13 @@
 package com.example.chenx.sharebook;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -8,7 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.chenx.sharebook.gson.Movie_item;
@@ -16,6 +25,7 @@ import com.example.chenx.sharebook.gson.Movie_comment;
 import com.example.chenx.sharebook.util.OverAllObject;
 
 import java.util.List;
+import java.util.logging.Handler;
 
 public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private static final int TYPE_TITILE=0;
@@ -93,16 +103,38 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         TextView movieUploder;
         TextView movieSummary;
 
-        public TitleViewHolder(View view){
+        public TitleViewHolder(final View view){
             super(view);
             movieImage=(ImageView)view.findViewById(R.id.image_comment);
             movieName=(TextView)view.findViewById(R.id.movie_name);
             movieSummary=(TextView)view.findViewById(R.id.movie_summary);
             movieUploder=(TextView)view.findViewById(R.id.movie_uploader);
 
+
+            movieImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    final AlertDialog.Builder builder=new AlertDialog.Builder(mContent,R.style.Theme_AppCompat_Light_NoActionBar);
+                    final Dialog dialog=new Dialog(mContent);
+                    dialog.setContentView(R.layout.dialog_bigpic);
+                    ImageView imageView=(ImageView)dialog.findViewById(R.id.image_bigpic);
+                    Glide.with(mContent).load(OverAllObject.getImageUrl(commenttTitle.url)).into(imageView);
+                    imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    dialog.show();
+
+                }
+            });
+
         }
 
     }
+
 
     class CommentViewHolder extends RecyclerView.ViewHolder{
 

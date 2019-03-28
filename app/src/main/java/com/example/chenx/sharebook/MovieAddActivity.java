@@ -29,6 +29,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -59,6 +60,20 @@ public class MovieAddActivity extends AppCompatActivity implements View.OnClickL
     private Spinner spinner;
     public static final int CHOOSE_PHOTO=1;
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+       // return super.onOptionsItemSelected(item);
+        switch (item.getItemId()){
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                break;
+        }
+
+        return true;
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -238,7 +253,7 @@ public class MovieAddActivity extends AppCompatActivity implements View.OnClickL
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-            android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.comment_toolbar);
+            android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
         }
 

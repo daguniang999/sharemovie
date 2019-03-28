@@ -125,11 +125,11 @@
         android:id="@+id/uploadImage"
         android:layout_width="340dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="250dp"
         android:background="#007ffc"
         android:textColor="#fff"
         android:layout_gravity="center"
-        android:text="上传图片" />
+        android:text="发布电影" />
 
 
 

@@ -15,6 +15,7 @@
             <ImageView
                 android:id="@+id/image_comment"
                 android:layout_width="80dp"
+                android:transitionName="sharedview"
                 android:scaleType="centerCrop"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"

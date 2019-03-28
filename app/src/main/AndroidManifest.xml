@@ -3,15 +3,15 @@
     package="com.example.chenx.sharebook">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name="org.litepal.LitePalApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name="org.litepal.LitePalApplication"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity">
             <intent-filter>
@@ -33,10 +33,9 @@
             android:name=".CommentActivity"
             android:label="评论" />
         <activity
-            android:label="添加"
-            android:name=".MovieAddActivity">
-
-        </activity>
+            android:name=".MovieAddActivity"
+            android:label="添加"></activity>
+        <activity android:name=".showbigpic"></activity>
     </application>
 
 </manifest>

@@ -155,12 +155,12 @@ public class typeFragment extends Fragment {
                     for(int i=movieList.size();i>0;i--){
                         movieList.remove(0);
                     }
-                    Log.d("pppp", "1: "+movieList.size());
+                  //  Log.d("pppp", "1: "+movieList.size());
 
 
                 }
                 final String responseText=response.body().string();
-                Log.d("pppp", responseText);
+             //   Log.d("pppp", responseText);
                 final Movie_List movie=Utility.handleMovieitemResponse(responseText);
 
                 if(movie.movie_list.size()!=0){
@@ -169,7 +169,7 @@ public class typeFragment extends Fragment {
                         movieList.add(movie_item);
 
                     }
-                    Log.d("pppp", "2: "+movieList.size());
+                 //   Log.d("pppp", "2: "+movieList.size());
                 }
 
 
@@ -180,7 +180,7 @@ public class typeFragment extends Fragment {
                     public void run() {
 
                        adapter.notifyDataSetChanged();
-                       Log.d("pppp", "3: "+movieList.size());
+                     //  Log.d("pppp", "3: "+movieList.size());
                        isloading=false;
                        swipeRefreshLayout.setRefreshing(false);
 
