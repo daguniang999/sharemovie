@@ -82,6 +82,7 @@ public class CollectionActivity extends AppCompatActivity implements BottomNavig
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_collection);
+        ActivityCollector.addActivity(this);
         if(Build.VERSION.SDK_INT>Build.VERSION_CODES.O){
             Toolbar toolbar=findViewById(R.id.collect_toolbar);
             setSupportActionBar(toolbar);
@@ -107,6 +108,12 @@ public class CollectionActivity extends AppCompatActivity implements BottomNavig
         setDefault();
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 
     private void setDefault(){

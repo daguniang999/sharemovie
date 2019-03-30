@@ -32,8 +32,8 @@ public class myItemTouchHelperCallBack extends ItemTouchHelper.Callback {
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
 
         final int position=viewHolder.getAdapterPosition();
-        Snackbar.make(viewHolder.itemView,"Data deleted",Snackbar.LENGTH_SHORT)
-                .setAction("Undo", new View.OnClickListener() {
+        Snackbar.make(viewHolder.itemView,"Data Delete",Snackbar.LENGTH_SHORT)
+                .setAction("撤回", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         itemTouchHelperAdapter.onIteamInsert(position);

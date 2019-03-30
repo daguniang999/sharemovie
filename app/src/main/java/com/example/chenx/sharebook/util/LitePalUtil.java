@@ -62,7 +62,7 @@ public class LitePalUtil {
         visitedMovie.setName(movie_item.name);
         visitedMovie.setSummary(movie_item.summary);
         visitedMovie.setType(movie_item.type);
-        visitedMovie.setUploader(movie_item.uploadtime);
+        visitedMovie.setUploader(movie_item.uploader);
         visitedMovie.setUploadtime(movie_item.uploadtime);
         visitedMovie.setUrl(movie_item.url);
         visitedMovie.save();
@@ -76,7 +76,7 @@ public class LitePalUtil {
         wantMovie.setName(movie_item.name);
         wantMovie.setSummary(movie_item.summary);
         wantMovie.setType(movie_item.type);
-        wantMovie.setUploader(movie_item.uploadtime);
+        wantMovie.setUploader(movie_item.uploader);
         wantMovie.setUploadtime(movie_item.uploadtime);
         wantMovie.setUrl(movie_item.url);
         wantMovie.save();
@@ -90,7 +90,7 @@ public class LitePalUtil {
         collectMovie.setName(movie_item.name);
         collectMovie.setSummary(movie_item.summary);
         collectMovie.setType(movie_item.type);
-        collectMovie.setUploader(movie_item.uploadtime);
+        collectMovie.setUploader(movie_item.uploader);
         collectMovie.setUploadtime(movie_item.uploadtime);
         collectMovie.setUrl(movie_item.url);
         collectMovie.save();

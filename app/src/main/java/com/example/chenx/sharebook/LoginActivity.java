@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText PassWord;
     Button login;
     Button register;
+    private boolean flags=true;
 
     @Override
     public void onClick(View v) {
@@ -81,6 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             Intent Main=new Intent(LoginActivity.this,MainActivity.class);
                                             startActivity(Main);
                                             Toast.makeText(LoginActivity.this,"登陆成功",Toast.LENGTH_SHORT).show();
+                                            finish();
                                             break;
                                         case "2":
                                             Toast.makeText(LoginActivity.this,"用户名或密码错误",Toast.LENGTH_SHORT).show();
@@ -111,6 +113,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ActivityCollector.addActivity(this);
         UserName=(EditText)findViewById(R.id.login_username);
         PassWord=(EditText)findViewById(R.id.login_password);
         login=(Button)findViewById(R.id.login_login);
@@ -121,18 +124,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         login.setOnClickListener(this);
         register.setOnClickListener(this);
+        Intent intent=null;
+        try{
+            intent=getIntent();
+            if(intent!=null) {
+                if(intent.getStringExtra("quit").equals("quit")){
+                    LitePal.deleteAll(Person.class);
+                    flags=false;
+                }
 
-        LitePal.getDatabase();
-        List<Person> list=new ArrayList<>();
-        list=LitePal.findAll(Person.class);
-        if(list.size()!=0){
-            Intent Main=new Intent(LoginActivity.this,MainActivity.class);
-            startActivity(Main);
-            finish();
+            }
 
-        }else {
-          //  Log.d("pppp", String.valueOf( list.size()));
+        }catch (Exception e){
+            e.printStackTrace();
+            flags=true;
+
         }
 
+
+
+
+        if(flags) {
+
+            LitePal.getDatabase();
+            List<Person> list = new ArrayList<>();
+            list = LitePal.findAll(Person.class);
+            if (list.size() != 0) {
+                Intent Main = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(Main);
+                ActivityCollector.removeActivity(this);
+                finish();
+
+            }
+        }
     }
 }

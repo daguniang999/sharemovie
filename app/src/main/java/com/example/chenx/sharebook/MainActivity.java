@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        ActivityCollector.addActivity(this);
         floatingActionButton=(FloatingActionButton)findViewById(R.id.movie_add);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.nav_set:
+                        Intent intent1=new Intent(MainActivity.this,SetActivity.class);
+                        startActivity(intent1);
                         break;
 
                     default:
@@ -139,5 +141,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
 
         // return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.removeActivity(this);
     }
 }
