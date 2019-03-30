@@ -27,6 +27,33 @@ public class LitePalUtil {
 
     }
 
+    public static void deleteCollect(List<Movie_item> List,int type){
+        switch (type){
+            case 0:
+                for(Movie_item movie_item :List){
+                    LitePal.deleteAll(VisitedMovie.class,"name=?",movie_item.name);
+                }
+
+                break;
+            case 1:
+                for(Movie_item movie_item :List) {
+                    LitePal.deleteAll(CollectMovie.class, "name=?", movie_item.name);
+                }
+                break;
+            case 2:
+                for(Movie_item movie_item :List) {
+                    LitePal.deleteAll(WantMovie.class, "name=?", movie_item.name);
+                }
+                break;
+                default:
+                    break;
+
+
+        }
+
+
+    }
+
 
     public static void saveVisitedMovie(Movie_item movie_item){
        // Log.d("cccc", movie_item.name);

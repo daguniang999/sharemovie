@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,14 +33,47 @@ import com.example.chenx.sharebook.util.LitePalUtil;
 import com.example.chenx.sharebook.util.OverAllObject;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> implements ItemTouchHelperAdapter {
+
 
     private List<Movie_item> movieList;
     private Context mContext;
     private ListPopupWindow listPopupWindow;
+    private String activity;
+    private int type;
+    private List<Movie_item> deleList=new ArrayList<>();
+
+    public  void deleCollect(){
+        LitePalUtil.deleteCollect(deleList,type);
+    }
+
+    @Override
+    public void onIteamDelete(int position) {
+
+        Movie_item movie_item=movieList.get(position);
+        deleList.add(movie_item);
+        movieList.remove(position);
+        notifyItemChanged(position);
+        notifyDataSetChanged();
+
+    }
+
+    @Override
+    public void onIteamInsert(int position) {
+        movieList.add(position,deleList.get(deleList.size()-1));
+        deleList.remove(deleList.size()-1);
+        notifyItemChanged(position);
+        notifyDataSetChanged();
+
+    }
+
+    public  void setType(int type){
+        this.type=type;
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder{
         CardView cardView;
@@ -61,8 +95,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
    }
 
 
-   public MovieAdapter(List<Movie_item> list){
+   public MovieAdapter(List<Movie_item> list,String activity){
         movieList=list;
+        this.activity=activity;
+
    }
 
 
@@ -72,20 +108,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         viewHolder.movieName.setText(movie.name);
         viewHolder.moviesummary.setText(movie.summary);
         viewHolder.movieuploadr.setText(movie.uploader);
-//        final ViewHolder viewHolder1=viewHolder;
-//        viewHolder.movieImage.setImageBitmap();
-//      //  Bitmap bitmap=BitmapFactory.decodeStream(url.openStream());
-//        //viewHolder.movieImage.setImageURI();
-//        android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
-//        handler.post(new Runnable() {
-//            @Override
-//            public void run() {
+        Glide.with(mContext).load(OverAllObject.getImageUrl(movie.url)).into(viewHolder.movieImage);
 
-                Glide.with(mContext).load(OverAllObject.getImageUrl(movie.url)).into(viewHolder.movieImage);
-
-//            }
-//        });
-//
     }
 
 
@@ -139,26 +163,30 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                            @Override
                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                               switch (position){
-                                   case 0:
-                                       LitePalUtil.saveVisitedMovie(movieList.get(holder.getAdapterPosition()));
-                                       break;
-                                   case 1:
-                                       LitePalUtil.saveWantMovie(movieList.get(holder.getAdapterPosition()));
-                                       break;
-                                   case 2:
-                                       LitePalUtil.saveCollectMovie(movieList.get(holder.getAdapterPosition()));
-                                       break;
+
+
+                                   switch (position) {
+                                       case 0:
+                                           LitePalUtil.saveVisitedMovie(movieList.get(holder.getAdapterPosition()));
+                                           break;
+                                       case 1:
+                                           LitePalUtil.saveWantMovie(movieList.get(holder.getAdapterPosition()));
+                                           break;
+                                       case 2:
+                                           LitePalUtil.saveCollectMovie(movieList.get(holder.getAdapterPosition()));
+                                           break;
                                        default:
                                            break;
-                               }
+                                   }
 
-                               listPopupWindow.dismiss();
+                                   listPopupWindow.dismiss();
+
 
                            }
                        });
-                       listPopupWindow.show();
-
+                       if(activity.equals("Main")) {
+                           listPopupWindow.show();
+                       }
 
 
 

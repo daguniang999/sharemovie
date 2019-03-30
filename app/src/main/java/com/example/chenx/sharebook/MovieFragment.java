@@ -71,7 +71,7 @@ public class MovieFragment extends Fragment {
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_view);
         GridLayoutManager manager=new GridLayoutManager(getContext(),1);
         recyclerView.setLayoutManager(manager);
-        adapter=new MovieAdapter(movieList);
+        adapter=new MovieAdapter(movieList,"Main");
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(loading);
         recyclerView.setOnTouchListener(new View.OnTouchListener() {
