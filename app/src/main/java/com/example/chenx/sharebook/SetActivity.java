@@ -47,7 +47,7 @@ public class SetActivity extends AppCompatActivity implements View.OnClickListen
                     break;
         }
         return true;
-        
+
         //return super.onOptionsItemSelected(item);
     }
 

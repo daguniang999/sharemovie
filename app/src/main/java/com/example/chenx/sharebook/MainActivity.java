@@ -13,9 +13,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 //import android.widget.Toolbar;
 
 import com.example.chenx.sharebook.util.LitePalUtil;
@@ -32,6 +34,30 @@ public class MainActivity extends AppCompatActivity {
     private FloatingActionButton floatingActionButton;
     private TextView nav_name;
     private NavigationView navigationView;
+    private long mExitTime;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(keyCode==KeyEvent.KEYCODE_BACK&&event.getRepeatCount()==0){
+            exit();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public void exit(){
+        if((System.currentTimeMillis()-mExitTime)>2000){
+            Toast.makeText(MainActivity.this,"再按一次退出",Toast.LENGTH_SHORT).show();
+            mExitTime=System.currentTimeMillis();
+        }else {
+            
+            ActivityCollector.finishAll();
+            System.exit(0);
+        }
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
