@@ -5,7 +5,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -32,11 +31,11 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class typeFragment extends Fragment {
+public class MovieFragment extends Fragment {
 
 
     private List<Movie_item> movieList=new ArrayList<>();
-    private String type;
+    private String type="剧情";
     private LinearLayoutManager linearLayoutManager;
     SwipeRefreshLayout swipeRefreshLayout;
     private int lastVisibleitem;
@@ -50,7 +49,15 @@ public class typeFragment extends Fragment {
         if(getUserVisibleHint()) {
             isloading = true;
             loadingList(true);
+
         }
+
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        type=getArguments().getString("type");
 
     }
 
@@ -59,8 +66,7 @@ public class typeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
 
       //  Log.d("tttt", "onCreateView: ");
-        View view=inflater.inflate(R.layout.layout_1,null);
-
+        View view=inflater.inflate(R.layout.movie_fragment,null);
         RecyclerView recyclerView=(RecyclerView)view.findViewById(R.id.first_recycler);
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_view);
         GridLayoutManager manager=new GridLayoutManager(getContext(),1);
@@ -95,12 +101,19 @@ public class typeFragment extends Fragment {
 
     }
 
-    public typeFragment(){
+    public MovieFragment(){
     }
 
-    public typeFragment(String type){
-        this.type=type;
+
+
+    public static final MovieFragment newInstance(String type){
+        MovieFragment fragment=new MovieFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("type",type);
+        fragment.setArguments(bundle);
+        return fragment;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -120,8 +133,6 @@ public class typeFragment extends Fragment {
 
     public void loadingList(final boolean flag){
         String movieid="";
-
-
 
         if(flag){
             movieid="100000";

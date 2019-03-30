@@ -8,17 +8,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     >
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/comment_toolbar"
-        android:background="?attr/colorPrimary"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        >
+        android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/comment_toolbar"
+            android:background="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            >
 
-    </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 <android.support.design.widget.CoordinatorLayout
+    android:layout_marginTop="10dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -49,6 +52,7 @@
         android:src="@drawable/comment_add"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:theme="@style/FloatingActionButton"
         android:id="@+id/comment_add"
         />
 

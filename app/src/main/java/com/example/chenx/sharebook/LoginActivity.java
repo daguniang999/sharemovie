@@ -70,7 +70,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                 person.setName(UserName.getText().toString());
                                                 person.setPassword(PassWord.getText().toString());
                                                 person.save();
-                                                list=LitePal.findAll(Person.class);
                                               //  Log.d("pppp!", String.valueOf(list.size()));
                                             }else {
                                                 Person person=new Person();

@@ -71,14 +71,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         list=new ArrayList<Fragment>();
-        list.add(new typeFragment("剧情"));
-        list.add(new typeFragment("喜剧"));
-        list.add(new typeFragment("爱情"));
-        list.add(new typeFragment("传记"));
-        list.add(new typeFragment("动作"));
-        list.add(new typeFragment("历史"));
-        list.add(new typeFragment("科幻"));
-        list.add(new typeFragment("奇幻"));
+        list.add(MovieFragment.newInstance("剧情"));
+        list.add(MovieFragment.newInstance("喜剧"));
+        list.add(MovieFragment.newInstance("爱情"));
+        list.add(MovieFragment.newInstance("传记"));
+        list.add(MovieFragment.newInstance("动作"));
+        list.add(MovieFragment.newInstance("历史"));
+        list.add(MovieFragment.newInstance("科幻"));
+        list.add(MovieFragment.newInstance("奇幻"));
         myPagerAdapter=new MyPagerAdapter(getSupportFragmentManager(),list);
 
 
@@ -105,6 +105,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nav_collect:
+                        Intent intent=new Intent(MainActivity.this,CollectionActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.nav_set:
                         break;

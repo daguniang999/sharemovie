@@ -18,4 +18,14 @@
     <style name="BlankTheme" parent="AppTheme">
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+    
+    
+    <style name="FloatingActionButton" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">#fff</item>
+        <item name="colorPrimaryDark">#fff</item>
+        <item name="colorAccent">#fff</item>
+
+    </style>
+
 </resources>
