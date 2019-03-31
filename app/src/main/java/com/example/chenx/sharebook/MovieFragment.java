@@ -91,6 +91,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onRefresh() {
                 isloading=true;
+                adapter.setover(false);
                 loadingList(true);
 
 
@@ -132,6 +133,7 @@ public class MovieFragment extends Fragment {
     }
 
     public void loadingList(final boolean flag){
+
         String movieid="";
 
         if(flag){
@@ -182,6 +184,9 @@ public class MovieFragment extends Fragment {
                     }
                  //   Log.d("pppp", "2: "+movieList.size());
                 }
+                if (movie.movie_list.size()<10){
+                    adapter.setover(true);
+                }
 
 
 
@@ -209,7 +214,8 @@ public class MovieFragment extends Fragment {
         @Override
         public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             super.onScrollStateChanged(recyclerView, newState);
-            if(movieList.size()>=10&&newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleitem+1==adapter.getItemCount()){
+            Log.d("wwwwq", ""+lastVisibleitem+" "+adapter.getItemCount());
+            if(movieList.size()>=10&&newState==RecyclerView.SCROLL_STATE_IDLE&&lastVisibleitem+1==adapter.getItemCount()&&!adapter.getover()){
                 isloading=true;
                 loadingList(false);
 

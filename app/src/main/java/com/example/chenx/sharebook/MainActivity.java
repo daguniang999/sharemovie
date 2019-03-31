@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,"再按一次退出",Toast.LENGTH_SHORT).show();
             mExitTime=System.currentTimeMillis();
         }else {
-            
+
             ActivityCollector.finishAll();
             System.exit(0);
         }
