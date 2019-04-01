@@ -4,16 +4,23 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PointF;
+import android.opengl.Matrix;
 import android.os.Build;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -26,8 +33,9 @@ import com.example.chenx.sharebook.util.OverAllObject;
 
 import java.util.List;
 import java.util.logging.Handler;
+import java.util.regex.Matcher;
 
-public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>  {
     private static final int TYPE_TITILE=0;
     private static final int TYPE_COMMENT=1;
     private static final int TYPE_FOOTER=2;
@@ -36,6 +44,31 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context mContent;
     private List<Movie_comment> movieCommentList;
     private Movie_item commenttTitle;
+    private android.graphics.Matrix matrix=new android.graphics.Matrix();
+    private android.graphics.Matrix saveMatrix=new android.graphics.Matrix();
+    private static final int NONE=0;//三种模式
+    private static final int DRAG=1;
+    private static final int ZOOM=2;
+    private  Boolean MOVE=false;
+    private int mode=NONE;//模式
+    private PointF startPoint=new PointF();//第一个按下的点
+    private PointF midPoint=new PointF();//二个点的重心
+    private float oriDis=1f;//二点之间的距离
+
+
+    private float distance(MotionEvent event){ //计算二点之间的距离
+        float x=event.getX(0)-event.getX(1);
+        float y=event.getY(0)-event.getY(1);
+        return Float.valueOf(String.valueOf(Math.sqrt(x*x+y*y)));
+    }
+
+    private PointF middle(MotionEvent event){
+        float x=event.getX(0)+event.getX(1);
+        float y=event.getY(0)+event.getY(1);
+        return new PointF(x/2,y/2);
+    }
+
+
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
@@ -117,21 +150,76 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     final AlertDialog.Builder builder=new AlertDialog.Builder(mContent,R.style.Theme_AppCompat_Light_NoActionBar);
                     final Dialog dialog=new Dialog(mContent);
                     dialog.setContentView(R.layout.dialog_bigpic);
-                    ImageView imageView=(ImageView)dialog.findViewById(R.id.image_bigpic);
-                    Glide.with(mContent).load(OverAllObject.getImageUrl(commenttTitle.url)).into(imageView);
-                    imageView.setOnClickListener(new View.OnClickListener() {
+                    final ImageView imageView=(ImageView)dialog.findViewById(R.id.image_bigpic);
+
+                    //
+                    imageView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
-                        public void onClick(View v) {
-                            dialog.cancel();
+                        public boolean onTouch(View v, MotionEvent event) {
+                            switch (event.getAction()&MotionEvent.ACTION_MASK){
+                                case MotionEvent.ACTION_DOWN:
+                                    matrix.set(imageView.getImageMatrix());
+                                    saveMatrix.set(matrix);
+                                    startPoint.set(event.getX(),event.getY());
+                                    mode=DRAG;
+                                    break;
+                                case MotionEvent.ACTION_POINTER_DOWN:
+                                    oriDis=distance(event);
+                                    if(oriDis>10f){
+                                        saveMatrix.set(matrix);
+                                        midPoint=middle(event);
+                                        mode=ZOOM;
+                                    }
+
+                                    break;
+
+                                case MotionEvent.ACTION_UP:
+                                case MotionEvent.ACTION_POINTER_UP:
+                                    if(mode==DRAG&&!MOVE){
+                                        dialog.dismiss();
+                                    }
+                                    mode=NONE;
+                                    MOVE=false;
+                                    break;
+
+                                case MotionEvent.ACTION_MOVE:
+                                    MOVE=true;
+                                    if(mode==DRAG){
+                                        matrix.set(saveMatrix);
+                                        matrix.postTranslate(event.getX()-startPoint.x,event.getY()-startPoint.y);
+                                    }else if (mode==ZOOM){
+
+                                        float newDist=distance(event);
+                                        if(newDist>10f){
+                                            matrix.set(saveMatrix);
+                                            float scale=newDist/oriDis;
+                                            matrix.postScale(scale,scale,midPoint.x,midPoint.y);
+                                        }
+
+                                    }
+
+                                    break;
+
+                            }
+
+                            imageView.setImageMatrix(matrix);
+                            return true;
                         }
                     });
-
+                    Glide.with(mContent).load(OverAllObject.getImageUrl(commenttTitle.url)).into(imageView);
                     dialog.show();
+                    Window win = dialog.getWindow();
+                    win.getDecorView().setPadding(0, 0, 0, 0);
+                    WindowManager.LayoutParams lp = win.getAttributes();
+                    lp.width = WindowManager.LayoutParams.FILL_PARENT;
+                    lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+                    win.setAttributes(lp);
 
                 }
             });
 
         }
+
 
     }
 
