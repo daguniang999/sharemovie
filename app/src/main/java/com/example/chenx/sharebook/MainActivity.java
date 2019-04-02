@@ -17,11 +17,13 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 //import android.widget.Toolbar;
 
 import com.example.chenx.sharebook.util.LitePalUtil;
+import com.example.chenx.sharebook.util.OverAllObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +58,9 @@ public class MainActivity extends AppCompatActivity {
         }else {
 
             ActivityCollector.finishAll();
-            System.exit(0);
+            Intent stop=new Intent(this,MyService.class);
+            stopService(stop);
+            //System.exit(0);
         }
 
     }
@@ -66,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ActivityCollector.addActivity(this);
+
+
+
         floatingActionButton=(FloatingActionButton)findViewById(R.id.movie_add);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +158,12 @@ public class MainActivity extends AppCompatActivity {
         });
         navigationView=(NavigationView)findViewById(R.id.nav_view);
         nav_name=(TextView)navigationView.getHeaderView(0).findViewById(R.id.nav_username);
-        nav_name.setText(LitePalUtil.getPerson().getName());
+        OverAllObject.setName(LitePalUtil.getPerson().getName());
+        nav_name.setText(OverAllObject.getName());
+
+
+        Intent statrIntent=new Intent(this,MyService.class);
+        startService(statrIntent);
 
     }
 

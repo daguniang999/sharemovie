@@ -151,49 +151,49 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     final Dialog dialog=new Dialog(mContent);
                     dialog.setContentView(R.layout.dialog_bigpic);
                     final ImageView imageView=(ImageView)dialog.findViewById(R.id.image_bigpic);
-
+                    Glide.with(mContent).load(OverAllObject.getImageUrl(commenttTitle.url)).into(imageView);
                     //
                     imageView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {
-                            switch (event.getAction()&MotionEvent.ACTION_MASK){
-                                case MotionEvent.ACTION_DOWN:
-                                    matrix.set(imageView.getImageMatrix());
-                                    saveMatrix.set(matrix);
-                                    startPoint.set(event.getX(),event.getY());
-                                    mode=DRAG;
-                                    break;
-                                case MotionEvent.ACTION_POINTER_DOWN:
-                                    oriDis=distance(event);
+                            switch (event.getAction()&MotionEvent.ACTION_MASK){//二个参数，分别是同时单点触屏和多点触屏用于响应
+                                case MotionEvent.ACTION_DOWN:   //单个手指时
+                                    matrix.set(imageView.getImageMatrix());  //获取此时的Image的Matrix
+                                    saveMatrix.set(matrix);                  //把此时的matrix存起来
+                                    startPoint.set(event.getX(),event.getY());    //获取开始的点
+                                    mode=DRAG;                              //设置模式为DRAG
+                                     break;
+                                case MotionEvent.ACTION_POINTER_DOWN:  //多个手指时
+                                    oriDis=distance(event);           //计算此时二指头距离
                                     if(oriDis>10f){
-                                        saveMatrix.set(matrix);
-                                        midPoint=middle(event);
-                                        mode=ZOOM;
+                                        saveMatrix.set(matrix);          //保存此时的matrix
+                                        midPoint=middle(event);          //计算中间距离
+                                        mode=ZOOM;                       //设置zoom模式
                                     }
 
                                     break;
 
                                 case MotionEvent.ACTION_UP:
-                                case MotionEvent.ACTION_POINTER_UP:
-                                    if(mode==DRAG&&!MOVE){
+                                case MotionEvent.ACTION_POINTER_UP:  //单个，多个手指离开屏幕时
+                                    if(mode==DRAG&&!MOVE){          //如果是点了一下，没有移动则关闭dialog
                                         dialog.dismiss();
                                     }
                                     mode=NONE;
                                     MOVE=false;
                                     break;
 
-                                case MotionEvent.ACTION_MOVE:
+                                case MotionEvent.ACTION_MOVE:    //手指移动时
                                     MOVE=true;
                                     if(mode==DRAG){
-                                        matrix.set(saveMatrix);
+                                        matrix.set(saveMatrix);             //把之前保存的matrix设为现在的，再调用posttranslate进行位移
                                         matrix.postTranslate(event.getX()-startPoint.x,event.getY()-startPoint.y);
                                     }else if (mode==ZOOM){
 
                                         float newDist=distance(event);
                                         if(newDist>10f){
                                             matrix.set(saveMatrix);
-                                            float scale=newDist/oriDis;
-                                            matrix.postScale(scale,scale,midPoint.x,midPoint.y);
+                                            float scale=newDist/oriDis;         //根据初始手指距离和现在手指距离的比值来确定缩放倍数，
+                                            matrix.postScale(scale,scale,midPoint.x,midPoint.y);    //（x轴缩放倍数，y轴缩放倍数，缩放重心x，缩放重心y）
                                         }
 
                                     }
@@ -202,11 +202,11 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
                             }
 
-                            imageView.setImageMatrix(matrix);
+                            imageView.setImageMatrix(matrix);//应用于布局
                             return true;
                         }
                     });
-                    Glide.with(mContent).load(OverAllObject.getImageUrl(commenttTitle.url)).into(imageView);
+
                     dialog.show();
                     Window win = dialog.getWindow();
                     win.getDecorView().setPadding(0, 0, 0, 0);

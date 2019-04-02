@@ -14,6 +14,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -29,15 +30,23 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.chenx.sharebook.gson.Movie_item;
+import com.example.chenx.sharebook.gson.SimpleBack;
+import com.example.chenx.sharebook.util.HttpUtil;
 import com.example.chenx.sharebook.util.LitePalUtil;
 import com.example.chenx.sharebook.util.OverAllObject;
+import com.example.chenx.sharebook.util.Utility;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
 
-public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter {
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+
+public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements ItemTouchHelperAdapter{
 
 
     private List<Movie_item> movieList;
@@ -50,11 +59,12 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private static final int TYPE_LOAD=1;
     private static final int TYPE_FOOTER=2;
     private boolean isend=false;
-
+    private int clickcount=0;
 
     public  void deleCollect(){
         LitePalUtil.deleteCollect(deleList,type);
     }
+
 
     @Override
     public void onIteamDelete(int position) {
@@ -146,7 +156,7 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, final int i) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull final ViewGroup viewGroup, final int i) {
 
         if(mContext==null){
            mContext=viewGroup.getContext();
@@ -157,25 +167,170 @@ public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
            final ViewHolder holder;
            final View view = LayoutInflater.from(mContext).inflate(R.layout.movie_item, viewGroup, false);
            holder = new ViewHolder(view);
-
+           final ImageView heart=(ImageView)view.findViewById(R.id.good_heart);
            holder.cardView.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View v) {
-                   int position = holder.getAdapterPosition();
 
-                   Intent intent = new Intent(mContext, CommentActivity.class);
-                   Movie_item movie_item = movieList.get(position);
-                   intent.putExtra("movie_id", movie_item.id);
-                   intent.putExtra("movie_name", movie_item.name);
-                   intent.putExtra("movie_uploader", movie_item.uploader);
-                   intent.putExtra("movie_summary", movie_item.summary);
-                   intent.putExtra("movie_url", movie_item.url);
-                   mContext.startActivity(intent);
+
+               @Override
+               public void onClick(final View v) {
+                   clickcount++;
+                   final int position = holder.getAdapterPosition();
+                   final Movie_item movie_item = movieList.get(position);
+                   final android.os.Handler handler=new android.os.Handler();
+                   handler.postDelayed(new Runnable() {
+                       @Override
+                       public void run() {
+                           if(clickcount==1){
+                               Intent intent = new Intent(mContext, CommentActivity.class);
+
+                               intent.putExtra("movie_id", movie_item.id);
+                               intent.putExtra("movie_name", movie_item.name);
+                               intent.putExtra("movie_uploader", movie_item.uploader);
+                               intent.putExtra("movie_summary", movie_item.summary);
+                               intent.putExtra("movie_url", movie_item.url);
+                               mContext.startActivity(intent);
+                           }else if(clickcount==2){
+
+                               String url=OverAllObject.getAddress()+"?type=setlove"
+                                       +"&&uploader=" +movie_item.uploader
+                                       +"&&moviename="+movie_item.name
+                                       +"&&gooder="+OverAllObject.getName();
+                               Log.d("erer", ""+url);
+                               HttpUtil.sendOkHttpRequest(url, new Callback() {
+                                   @Override
+                                   public void onFailure(Call call, IOException e) {
+                                     //  Toast.makeText(mContext,"服务器错误",Toast.LENGTH_SHORT).show();
+                                   }
+
+                                   @Override
+                                   public void onResponse(Call call, Response response) throws IOException {
+                                       String responseText=response.body().string();
+                                       Log.d("erer", ""+responseText);
+                                       SimpleBack simpleBack=Utility.handleSimpleResponse(responseText);
+                                       if(simpleBack.type.equals("setlove")&&simpleBack.state.equals("1"))
+                                       {
+
+                                           android.os.Handler handler1=new android.os.Handler();
+                                           handler.post(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                                   heart.setVisibility(View.VISIBLE);
+                                               }
+                                           });
+
+                                           handler.postDelayed(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                                  heart.setVisibility(View.INVISIBLE);
+
+                                               }
+                                           },1000);
+                                         //  Toast.makeText(mContext,"点赞成功",Toast.LENGTH_SHORT).show();
+                                       }
+                                   }
+                               });
+
+                           }
+                           clickcount=0;
+                       }
+                   },200);
+
+
 
 
                }
+
+
            });
 
+         // holder.cardView.setOnTouchListener(this);
+         //  youyong
+//           holder.cardView.setOnTouchListener(new MyClickListener(new MyClickListener.MyClickCallBack() {
+//               @Override
+//               public void longClick() {
+//
+//                   final android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
+//                   handler.post(new Runnable() {
+//                       @Override
+//                       public void run() {
+//
+//                           listPopupWindow = new ListPopupWindow(mContext);
+//                           listPopupWindow.setAdapter(new ArrayAdapter<String>(mContext, android.R.layout.simple_list_item_1, new
+//                                   String[]{"Add to Visited", "Add to Want", "Add to Collect"}));
+//                           listPopupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+//                           listPopupWindow.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+//                           listPopupWindow.setAnchorView(holder.cardView);//设置ListPopupWindow的锚点，即关联PopupWindow的显示位置和这个锚点 此处show_btn为按钮
+//                           listPopupWindow.setModal(true);//设置是否是模式
+//                           listPopupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                               @Override
+//                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//
+//
+//                                   switch (position) {
+//                                       case 0:
+//                                           LitePalUtil.saveVisitedMovie(movieList.get(holder.getAdapterPosition()));
+//                                           break;
+//                                       case 1:
+//                                           LitePalUtil.saveWantMovie(movieList.get(holder.getAdapterPosition()));
+//                                           break;
+//                                       case 2:
+//                                           LitePalUtil.saveCollectMovie(movieList.get(holder.getAdapterPosition()));
+//                                           break;
+//                                       default:
+//                                           break;
+//                                   }
+//
+//                                   listPopupWindow.dismiss();
+//
+//
+//                               }
+//                           });
+//                           if (activity.equals("Main")) {
+//                               listPopupWindow.show();
+//                           }
+//
+//
+//                       }
+//                   });
+//               }
+//
+//               @Override
+//               public void oneClick() {
+//
+//                   int position = holder.getAdapterPosition();
+//
+//                   Intent intent = new Intent(mContext, CommentActivity.class);
+//                   Movie_item movie_item = movieList.get(position);
+//                   intent.putExtra("movie_id", movie_item.id);
+//                   intent.putExtra("movie_name", movie_item.name);
+//                   intent.putExtra("movie_uploader", movie_item.uploader);
+//                   intent.putExtra("movie_summary", movie_item.summary);
+//                   intent.putExtra("movie_url", movie_item.url);
+//                   mContext.startActivity(intent);
+//
+//
+//
+//               }
+//
+//               @Override
+//               public void doubleClick() {
+//                   final android.os.Handler handler = new android.os.Handler(Looper.getMainLooper());
+//                   handler.post(new Runnable() {
+//                       @Override
+//                       public void run() {
+//                           Toast.makeText(mContext,"two",Toast.LENGTH_SHORT).show();
+//                       }
+//                   });
+//               }
+//           }));
+
+//
+//           holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
+//               @Override
+//               public boolean onLongClick(View v) {
+//                   return false;
+//               }
+//           });
 
            holder.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                @Override
