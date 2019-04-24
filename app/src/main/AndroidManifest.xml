@@ -13,40 +13,52 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcut"></meta-data>
         </activity>
         <activity
             android:name=".RegisterActivity"
-            android:label="Register">
-
-            <!-- <meta-data -->
-            <!-- android:name="android.support.PARENT_ACTIVITY" -->
-            <!-- android:value=".LoginActivity" /> -->
-        </activity>
-        <activity android:name=".MainActivity" />
+            android:label="Register"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CommentActivity"
-            android:label="评论" />
+            android:label="评论"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MovieAddActivity"
-            android:label="添加" />
+            android:label="添加"
+            android:screenOrientation="portrait" />
         <activity android:name=".showbigpic" />
         <activity
             android:name=".CollectionActivity"
-            android:label="我的收藏" />
+            android:label="我的收藏"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".SetActivity"
-            android:label="设置" />
+            android:label="设置"
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".MyService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity
+            android:label="搜索"
+            android:name=".SearchActivity"></activity>
     </application>
 
 </manifest>

@@ -7,7 +7,12 @@
             android:icon="@drawable/menu_main"
             >
         </item>
-
+        <item
+            android:title="搜索"
+            android:id="@+id/menu_find"
+            android:icon="@drawable/menu_find"
+            >
+        </item>
         <item
             android:title="收藏"
             android:icon="@drawable/menu_collect"

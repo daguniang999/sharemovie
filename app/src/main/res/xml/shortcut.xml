@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="mycollect"
+        android:enabled="true"
+        android:icon="@drawable/mycollect"
+        android:shortcutShortLabel="@string/short_2"
+        android:shortcutLongLabel="@string/long_2"
+        android:shortcutDisabledMessage="@string/dis_2">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.chenx.sharebook"
+            android:targetClass="com.example.chenx.sharebook.MainActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.chenx.sharebook"
+            android:targetClass="com.example.chenx.sharebook.CollectionActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="addmovie"
+        android:enabled="true"
+        android:icon="@drawable/add_pic"
+        android:shortcutShortLabel="@string/short_1"
+        android:shortcutLongLabel="@string/long_1"
+        android:shortcutDisabledMessage="@string/dis_1">
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.chenx.sharebook"
+            android:targetClass="com.example.chenx.sharebook.MainActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+
+
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="com.example.chenx.sharebook"
+            android:targetClass="com.example.chenx.sharebook.MovieAddActivity" />
+        <categories android:name="android.shortcut.conversation"/>
+
+    </shortcut>
+
+
+
+
+</shortcuts>

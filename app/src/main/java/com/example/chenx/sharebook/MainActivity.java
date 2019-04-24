@@ -14,9 +14,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +31,7 @@ import com.example.chenx.sharebook.util.OverAllObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private DrawerLayout drawerLayout;
     private ViewPager viewPager;
@@ -38,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView nav_name;
     private NavigationView navigationView;
     private long mExitTime;
+
+
 
 
     @Override
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void exit(){
         if((System.currentTimeMillis()-mExitTime)>2000){
+
+            
             Toast.makeText(MainActivity.this,"再按一次退出",Toast.LENGTH_SHORT).show();
             mExitTime=System.currentTimeMillis();
         }else {
@@ -70,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ActivityCollector.addActivity(this);
+
 
 
 
@@ -106,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         list=new ArrayList<Fragment>();
+        list.add(new FirstFragment(viewPager));
         list.add(MovieFragment.newInstance("剧情"));
         list.add(MovieFragment.newInstance("喜剧"));
         list.add(MovieFragment.newInstance("爱情"));
@@ -119,14 +128,15 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(myPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-        tabLayout.getTabAt(0).setText("剧情");
-        tabLayout.getTabAt(1).setText("喜剧");
-        tabLayout.getTabAt(2).setText("爱情");
-        tabLayout.getTabAt(3).setText("传记");
-        tabLayout.getTabAt(4).setText("动作");
-        tabLayout.getTabAt(5).setText("历史");
-        tabLayout.getTabAt(6).setText("科幻");
-        tabLayout.getTabAt(7).setText("奇幻");
+        tabLayout.getTabAt(0).setText("首页");
+        tabLayout.getTabAt(1).setText("剧情");
+        tabLayout.getTabAt(2).setText("喜剧");
+        tabLayout.getTabAt(3).setText("爱情");
+        tabLayout.getTabAt(4).setText("传记");
+        tabLayout.getTabAt(5).setText("动作");
+        tabLayout.getTabAt(6).setText("历史");
+        tabLayout.getTabAt(7).setText("科幻");
+        tabLayout.getTabAt(8).setText("奇幻");
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         navigationView=(NavigationView)findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -139,6 +149,10 @@ public class MainActivity extends AppCompatActivity {
                         viewPager.setCurrentItem(0);
                         break;
 
+                    case R.id.menu_find:
+                        Intent search=new Intent(MainActivity.this,SearchActivity.class);
+                        startActivity(search);
+                        break;
                     case R.id.nav_collect:
                         Intent intent=new Intent(MainActivity.this,CollectionActivity.class);
                         startActivity(intent);
@@ -164,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent statrIntent=new Intent(this,MyService.class);
         startService(statrIntent);
+
 
     }
 

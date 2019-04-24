@@ -47,10 +47,22 @@ public class MovieFragment extends Fragment {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(getUserVisibleHint()) {
-            isloading = true;
-            loadingList(true);
+
+//            if(movieList.size()==0){
+//                isloading = true;
+//                loadingList(true);
+//                Log.d("ttt", type);
+//
+//            }
 
         }
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("ttt", "onDestroy: "+type);
 
     }
 
@@ -58,7 +70,14 @@ public class MovieFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type=getArguments().getString("type");
+        Log.d("ttt", "onCreate: ");
 
+        if(movieList.size()==0){
+            isloading = true;
+            loadingList(true);
+            Log.d("ttt", type);
+
+        }
     }
 
     @Nullable
@@ -87,10 +106,18 @@ public class MovieFragment extends Fragment {
         });
 
 
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 isloading=true;
+
+
+                for(int i=movieList.size();i>0;i--){
+                    movieList.remove(0);
+                }
+
+
                 adapter.setover(false);
                 loadingList(true);
 
@@ -163,15 +190,15 @@ public class MovieFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
 
-                if(flag){
-
-                    for(int i=movieList.size();i>0;i--){
-                        movieList.remove(0);
-                    }
-                  //  Log.d("pppp", "1: "+movieList.size());
-
-
-                }
+//                if(flag){
+//
+//                    for(int i=movieList.size();i>0;i--){
+//                        movieList.remove(0);
+//                    }
+//                  //  Log.d("pppp", "1: "+movieList.size());
+//
+//
+//                }
                 final String responseText=response.body().string();
              //   Log.d("pppp", responseText);
                 final Movie_List movie=Utility.handleMovieitemResponse(responseText);
