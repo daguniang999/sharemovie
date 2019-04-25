@@ -8,7 +8,6 @@ public class OverAllObject {
     private static String HttpAddress="http://106.15.190.83:6767/service.aspx";
     private static String ImageUrl="http://106.15.190.83:6767/";
     private static String Name;
-
     public static String getAddress(){
 
         return HttpAddress;
@@ -27,5 +26,6 @@ public class OverAllObject {
 
         return ImageUrl+Name;
     }
+
 
 }

@@ -38,7 +38,7 @@ import static android.provider.Telephony.Mms.Part.CHARSET;
 public class UploadUtil {
     private static ProgressDialog progressBar;
 
-    public static void uploadPic(File file, String RequestURL, String PicName, String movieName, String Uploader, final String Type, String Summary, final Activity activity) {
+    public static void uploadPic(final File file, String RequestURL, String PicName, String movieName, String Uploader, final String Type, String Summary, final Activity activity) {
 
 
 
@@ -79,6 +79,7 @@ public class UploadUtil {
 
                     }
                 });
+                file.delete();
                 activity.finish();
             }
         });

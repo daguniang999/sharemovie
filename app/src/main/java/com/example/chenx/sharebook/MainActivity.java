@@ -1,13 +1,17 @@
 package com.example.chenx.sharebook;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Matrix;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity{
     public void exit(){
         if((System.currentTimeMillis()-mExitTime)>2000){
 
-            
+
             Toast.makeText(MainActivity.this,"再按一次退出",Toast.LENGTH_SHORT).show();
             mExitTime=System.currentTimeMillis();
         }else {
@@ -70,6 +74,24 @@ public class MainActivity extends AppCompatActivity{
             //System.exit(0);
         }
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 1:
+                if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+
+                }else {
+                    Toast.makeText(this,"MUST PASS",Toast.LENGTH_SHORT).show();
+                }
+                break;
+            default:
+                break;
+        }
+
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -161,7 +183,6 @@ public class MainActivity extends AppCompatActivity{
                         Intent intent1=new Intent(MainActivity.this,SetActivity.class);
                         startActivity(intent1);
                         break;
-
                     default:
                         break;
                 }
@@ -179,6 +200,9 @@ public class MainActivity extends AppCompatActivity{
         Intent statrIntent=new Intent(this,MyService.class);
         startService(statrIntent);
 
+        if(ContextCompat.checkSelfPermission(MainActivity.this,Manifest.permission.WRITE_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},1);
+        }
 
     }
 

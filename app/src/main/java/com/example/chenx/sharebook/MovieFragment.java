@@ -71,7 +71,7 @@ public class MovieFragment extends Fragment {
         super.onCreate(savedInstanceState);
         type=getArguments().getString("type");
         Log.d("ttt", "onCreate: ");
-
+        adapter=new MovieAdapter(movieList,"Main");
         if(movieList.size()==0){
             isloading = true;
             loadingList(true);
@@ -90,7 +90,7 @@ public class MovieFragment extends Fragment {
         swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipe_view);
         GridLayoutManager manager=new GridLayoutManager(getContext(),1);
         recyclerView.setLayoutManager(manager);
-        adapter=new MovieAdapter(movieList,"Main");
+       // adapter=new MovieAdapter(movieList,"Main");
         recyclerView.setAdapter(adapter);
         recyclerView.addOnScrollListener(loading);
         recyclerView.setOnTouchListener(new View.OnTouchListener() {

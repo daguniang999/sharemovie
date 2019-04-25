@@ -6,7 +6,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.opengl.Matrix;
 import android.os.Build;
@@ -30,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.example.chenx.sharebook.gson.Movie_item;
 import com.example.chenx.sharebook.gson.Movie_comment;
 import com.example.chenx.sharebook.util.OverAllObject;
+import com.example.chenx.sharebook.util.SaveImageUtils;
 
 import java.util.List;
 import java.util.logging.Handler;
@@ -143,6 +146,24 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             movieSummary=(TextView)view.findViewById(R.id.movie_summary);
             movieUploder=(TextView)view.findViewById(R.id.movie_uploader);
 
+            movieImage.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Log.d("ioio", "onLongClick: ");
+                    AlertDialog.Builder builder1=new AlertDialog.Builder(mContent);
+                    builder1.setItems(new String[]{mContent.getResources().getString(R.string.save_piecture)}, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            movieImage.setDrawingCacheEnabled(true);
+                            Bitmap imageBit=movieImage.getDrawingCache();
+                            if(imageBit!=null){
+                                new SaveImageUtils(mContent,movieImage).execute(imageBit);
+                            }
+                        }
+                    }).show();
+                    return true;
+                }
+            });
 
             movieImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -153,6 +174,7 @@ public class MyCommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     final ImageView imageView=(ImageView)dialog.findViewById(R.id.image_bigpic);
                     Glide.with(mContent).load(OverAllObject.getImageUrl(commenttTitle.url)).into(imageView);
                     //
+
                     imageView.setOnTouchListener(new View.OnTouchListener() {
                         @Override
                         public boolean onTouch(View v, MotionEvent event) {

@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
@@ -119,10 +120,16 @@ public class MovieAddActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(MovieAddActivity.this,"请填写完整",Toast.LENGTH_SHORT).show();
 
                 }else {
-                    File file=new File(picPath);
+                    File file=new File(Environment.getExternalStorageDirectory()+"/sharemovie");
+                    if(!file.exists()){
+                        file.mkdirs();
+                    }
+                    File imagefile=new File(Environment.getExternalStorageDirectory()+"/sharemovie",System.currentTimeMillis()+".jpg");
+
                     Bitmap bm=BitmapFactory.decodeFile(picPath);
+
                     try{
-                        FileOutputStream out=new FileOutputStream(file);
+                        FileOutputStream out=new FileOutputStream(imagefile);
                         bm.compress(Bitmap.CompressFormat.JPEG,50,out);
                     }catch (Exception e){
                             e.printStackTrace();
@@ -135,7 +142,7 @@ public class MovieAddActivity extends AppCompatActivity implements View.OnClickL
                     String summary=moviesummary.getText().toString();
                     String uploader=LitePalUtil.getPerson().getName();
                     String type=spinner.getSelectedItem().toString();
-                    UploadUtil.uploadPic(file,URL,PicName,name,uploader,type,summary,MovieAddActivity.this);
+                    UploadUtil.uploadPic(imagefile,URL,PicName,name,uploader,type,summary,MovieAddActivity.this);
 
 
                 }

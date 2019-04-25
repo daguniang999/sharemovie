@@ -9,4 +9,7 @@
     <string name="short_2">我的收藏</string>
     <string name="long_2">我的收藏</string>
     <string name="dis_2">我的收藏</string>
+    <string name="savefail">保存失败</string>
+    <string name="save_piecture">保存图片</string>
+    <string name="savesuccess" >图片成功保存至%smul</string>
 </resources>
